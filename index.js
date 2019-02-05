@@ -3,14 +3,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const callbackHost = "6d395033.ngrok.io";
+const callbackHost = process.env.CALLBACK_HOST;
 
 const { Collections } = momo({ callbackHost });
 
 const collections = Collections({
-  primaryKey: "028b71f923f24df9a3d9fe90a645309e",
-  userSecret: "1c2ea77e4cdc41018b0e9083737aa3b0",
-  userId: "5042a526-49fa-4647-bda6-3b3c0aaba2bb"
+  primaryKey: process.env.PRIMARY_KEY,
+  userSecret: process.env.USER_SECRET,
+  userId: process.env.USER_ID
 });
 
 const app = express();
@@ -37,7 +37,7 @@ app.get("/pay", (_req, res) => {
       },
       payerMessage: "testing",
       payeeNote: "hello",
-      callbackUrl: "https://6d395033.ngrok.io/callback"
+      callbackUrl: `https://${callbackHost}/callback`
     })
     .then(referenceId => collections.getTransaction(referenceId))
     .then(transaction => res.json(transaction));
