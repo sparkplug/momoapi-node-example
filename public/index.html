@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Pay</title>
+    <style>
+      div {
+        margin: 1em 0;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="pay" action="/pay" method="POST">
+      <div>
+        <label for="product">Product</label>
+        <select id="product">
+          <option value="1">Minute Maid</option>
+          <option value="2">Coca Cola</option>
+        </select>
+      </div>
+      <div>
+        <label for="qty">Qty</label>
+        <input placeholder="Qty" type="number" id="qty" />
+      </div>
+      <div>
+        <label for="phone">Phone</label>
+        <input placeholder="Phone" type="text" id="phone" />
+      </div>
+      <div><button id="button" type="submit">Pay</button></div>
+    </form>
+
+    <script>
+      var form = document.getElementById("pay");
+
+      const button = document.getElementById("button");
+      const elProduct = document.getElementById("product");
+      const elQty = document.getElementById("qty");
+      const elPhone = document.getElementById("phone");
+
+      function loadingForm() {
+        button.disabled = true;
+        button.innerHTML = "Loading...";
+      }
+
+      function resetForm() {
+        button.disabled = false;
+        button.innerHTML = "Pay";
+      }
+
+      form.onsubmit = function(event) {
+        event.preventDefault();
+        var formData = new FormData(event.target);
+
+        const productId = elPhone.value;
+        const qty = elQty.value;
+        const phone = elPhone.value;
+
+        loadingForm();
+        fetch("/pay", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ productId, qty, phone })
+        })
+          .then(response => response.json())
+          .then(paymentStatus => {
+            console.log(paymentStatus);
+            resetForm();
+          })
+          .catch(() => {
+            resetForm();
+          });
+      };
+    </script>
+  </body>
+</html>
