@@ -12,6 +12,9 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
-    "mtn-momo": "^0.1.0"
+    "mtn-momo": "^1.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
   }
 }
